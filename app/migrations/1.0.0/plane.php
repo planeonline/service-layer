@@ -51,11 +51,19 @@ class PlaneMigration_100 extends Migration
                     )
                 ),
                 new Column(
-                    'description',
+                    'model',
                     array(
                         'type' => Column::TYPE_VARCHAR,
                         'size' => 45,
                         'after' => 'title'
+                    )
+                ),
+                new Column(
+                    'description',
+                    array(
+                        'type' => Column::TYPE_VARCHAR,
+                        'size' => 45,
+                        'after' => 'model'
                     )
                 ),
                 new Column(
