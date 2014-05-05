@@ -1,0 +1,3 @@
+[submodule "library/incubator"]
+	path = library/incubator
+	url = https://github.com/phalcon/incubator.git
