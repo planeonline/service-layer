@@ -101,15 +101,23 @@ class RestRequest extends Request{
             } 
             
         $this->setParams($params);
-    }
+    }    
     
     public function setParams($params){
         $this->_params = $params;
     }
     
-    public function getParams(){
+    public function getParams($publicOnly = false){
         if(is_null($this->_params)){
             $this->_initParams();
+        }
+        
+        if($publicOnly){            
+            array_walk($this->_params, function(&$value,$key){                
+                if(substr($key,0,1) == '_'){
+                    unset($this->_params[$key]);
+                }
+            });
         }
         
         return $this->_params;

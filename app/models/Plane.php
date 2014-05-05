@@ -1,5 +1,7 @@
 <?php
 
+use RESTFulPhalcon\RestModel;
+use Phalcon\Mvc\Model\Validator\Numericality as NumericalityValidator;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,7 +14,7 @@
  * @author ABN
  */
 class Plane extends RestModel{
-    
+        
     protected function columnMap()
     {
         return array(
@@ -20,6 +22,7 @@ class Plane extends RestModel{
             'user' => 'user',
             'make' => 'make',
             'title' => 'title',
+            'model' => 'model',
             'description' => 'description',
             'lastupdated' => 'lastupdated',
             'status' => 'status',
@@ -51,5 +54,6 @@ class Plane extends RestModel{
         $this->skipAttributesOnCreate(array('lastupdated'));
         $this->skipAttributesOnUpdate(array('lastupdated'));
     }
+    
     
 }

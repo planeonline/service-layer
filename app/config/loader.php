@@ -9,6 +9,7 @@ $loader->registerDirs(
         array(
             $config->application->controllersDir,
             $config->application->modelsDir,
+            $config->application->validatorsDir,
 //            $config->application->RESTDir,
 //            $config->application->RESTRequest,
 //            $config->application->RESTModel
@@ -18,6 +19,7 @@ $loader->registerDirs(
 $loader->registerNamespaces(
         array(
            'RESTFulPhalcon' => '../library/RESTFulPhalcon', 
+           'RESTFulPhalcon\Response' => '../library/RESTFulPhalcon/RestResponse', 
         )
 );
 

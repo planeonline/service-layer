@@ -10,7 +10,7 @@ use Behat\Gherkin\Node\TableNode;
 class FeatureContext implements SnippetAcceptingContext
 {
 
-	protected $_records;
+    protected $_records;
 
     protected $_debug = true;
 
@@ -53,6 +53,8 @@ class FeatureContext implements SnippetAcceptingContext
         }
 
         exec($cmd, $this->_output);
+                
+        
     }
 
     /**
@@ -60,12 +62,22 @@ class FeatureContext implements SnippetAcceptingContext
      */
     public function iShouldGet(PyStringNode $string)
     {
-        if ((string) $this->_output[0] !== (string) $string->getRaw()) {
-            throw new Exception("Actual output is:\n" . $this->_output[0]);
+        $output = $this->_replaceDynamicFieldValues((string) $this->_output[0]);
+        if ($output !== (string) $string->getRaw()) {
+            throw new Exception("Actual output is:\n" . $output);
         }
     }
 
     protected function getParam($name){
         return $this->_params[$name];
+    }
+    
+    protected function _replaceDynamicFieldValues($content){
+        
+        $pattern = '/"id":"\d+"/'; // "id":"30"
+        $replacement = '"id":"???"';
+        $result = preg_replace($pattern, $replacement, $content);
+        
+        return $result;
     }
 }
