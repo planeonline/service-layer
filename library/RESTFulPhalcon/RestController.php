@@ -76,6 +76,7 @@ class RestController extends Controller {
         $request = $this->getRestRequest();
 
         $data = $request->getParams(true);
+        
         $model = $this->getDefaultModel();
         $model->assign($data);
 
