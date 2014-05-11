@@ -71,5 +71,9 @@ class RestResponseResult {
             'result' => $this->_result
         );
     }
+    
+    public function setCriteria($criteria){
+        $this->_metadata['criteria'] = $criteria;
+    }
 
 }

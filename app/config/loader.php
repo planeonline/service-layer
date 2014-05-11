@@ -20,6 +20,7 @@ $loader->registerNamespaces(
         array(
            'RESTFulPhalcon' => '../library/RESTFulPhalcon', 
            'RESTFulPhalcon\Response' => '../library/RESTFulPhalcon/RestResponse', 
+           'RESTFulPhalcon\Request' => '../library/RESTFulPhalcon/RestRequest', 
         )
 );
 

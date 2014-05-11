@@ -4,6 +4,7 @@ namespace RESTFulPhalcon;
 
 use Phalcon\Http\Request;
 use Phalcon\Mvc\Model\Criteria;
+use RESTFulPhalcon\Request\RestCriteria;
 
 /**
  * Description of RestRequest
@@ -28,7 +29,20 @@ class RestRequest extends Request{
     }
     
     protected function _initCriteria(){
-        $this->_criteria = new Criteria();                
+        $this->_criteria = new RestCriteria($this);          
+        
+//        
+//        $this->_criteria->where("id = :id:");
+//        $this->_criteria->inWhere('id', [1, 2, 3]);
+//        $this->_initCriteriaOrders();
+    }
+    
+    protected function _initCriteriaOrders(){
+        
+        $order = $this->_params['order'];
+        var_dump($order, __FILE__ . ' : ' . __LINE__);
+        die();
+        $this->_criteria->orderBy('id');
     }
     
     public function setCriteria($criteria = null){
@@ -112,14 +126,18 @@ class RestRequest extends Request{
             $this->_initParams();
         }
         
-        if($publicOnly){            
-            array_walk($this->_params, function(&$value,$key){                
-                if(substr($key,0,1) == '_'){
-                    unset($this->_params[$key]);
+        $params = $this->_params;
+        
+        if($publicOnly){                 
+            array_walk($params, function(&$value,$key) use(&$params){                
+                if(substr($key,0,1) == '_'){                    
+                    unset($params[$key]);
                 }
             });
         }
         
-        return $this->_params;
+        return $params;
+        
     }
+        
 }

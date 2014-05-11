@@ -34,53 +34,31 @@ class RestController extends Controller {
         
     }
 
-    public function indexActionBu() {
+    public function indexAction() {
+        $this->_setHeader();
+        
+        $genericModel = $this->getDefaultModel();
 
-        $request = $this->getRestRequest();
-
-        $model = $this->getDefaultModel();
-
-        $data = $request->getParams(true);
-
-        $model->assign($data);
+        
+//        var_dump($this->getRestRequest()->getCriteria(), __FILE__ . ' : ' . __LINE__);
+//        die();
+        $models = $genericModel->find($this->getRestRequest()->getCriteria()->getParams());
 
         $result = new Response\RestResponseResult();
-
-        var_dump($model->create($data), __FILE__ . ' : ' . __LINE__);
-        die();
-        if ($model->create($data)) {
-            $result->setCode("201");
-            $result->setStatus('created');
-            $result->setResult($model->dump());
-        } else {
-            $result->setCode("400");
-            $result->setStatus('bad request');
-            $result->setResult($model->getValidators()->getMessages());
-        }
-
-
-        var_dump($result, __FILE__ . ' : ' . __LINE__);
-        die();
-        $this->getRestResponse()->addResult($result, $this->getDefaultModel(true));
-
+        $result->setModel($this->getDefaultModel(true));
+        
+        
+        $result->setResult($models->toArray());
+        $result->setCriteria($this->getRestRequest()->getCriteria()->getParams());
+        
+        $this->getRestResponse()->addResult($result);
+        
         echo $this->getRestResponse();
         die();
-        var_dump($result, __FILE__ . ' : ' . __LINE__);
-        die();
-    }
-
-    public function indexAction() {
-
-//        $this->_setHeader();
-
-        $request = $this->getRestRequest();
-
-        $data = $request->getParams(true);
         
-        $model = $this->getDefaultModel();
-        $model->assign($data);
+        $this->response->setJsonContent($result);
 
-        $result = $model->create($data);
+        return $this->response;
 
     }
 
@@ -177,6 +155,11 @@ class RestController extends Controller {
 
         $className = get_class($this);
         $modelName = str_replace('Controller', '', $className);
+        
+        if (!class_exists($modelName)) {
+            throw new Exception("Guessed model \"$modelName\" is not exists");
+        }
+        
         return $modelName;
     }
 
