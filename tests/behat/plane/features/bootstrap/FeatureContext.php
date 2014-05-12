@@ -12,7 +12,7 @@ class FeatureContext implements SnippetAcceptingContext
 
     protected $_records;
 
-    protected $_debug = true;
+    protected $_debug = false;
 
     protected $_output;    
 

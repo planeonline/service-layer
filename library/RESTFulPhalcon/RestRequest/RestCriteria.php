@@ -9,6 +9,9 @@ class RestCriteria extends Criteria {
     protected $_restRequest;
     protected $_originalParameters;
     protected $_whereParams;
+    
+    protected $_defaultStart = "0" ;
+    protected $_defaultSize = "10" ;
 
     /**
      * 
@@ -28,9 +31,17 @@ class RestCriteria extends Criteria {
         $this->_processSingularWheres();
         $this->_processInWheres();
         $this->_processBetweenWheres();
+        $this->_processLimit();
         
     }
 
+    protected function _processLimit(){
+        $offset = isset($this->_originalParameters['start'])?$this->_originalParameters['start']:$this->_defaultStart;
+        $limit = isset($this->_originalParameters['size'])?$this->_originalParameters['size']:$this->_defaultSize;
+        
+        $this->limit($limit, $offset);
+    }
+    
     protected function _processSingularWheres() {
 
         $singularConditions = array();
@@ -164,7 +175,7 @@ class RestCriteria extends Criteria {
 
         if (is_null($this->_whereParams)) {
             $this->_whereParams = array();
-            $ignoreKeys = array('order', 'expand', 'limit');
+            $ignoreKeys = array('order', 'expand', 'start','size');
 
             foreach ($this->_originalParameters as $key => $value) {
                 if (!in_array($key, $ignoreKeys)) {

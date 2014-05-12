@@ -1,6 +1,7 @@
 <?php
 
 namespace RESTFulPhalcon\Response;
+use RESTFulPhalcon\Request\RestCriteria;
 
 class RestResponseResult {
 
@@ -8,6 +9,9 @@ class RestResponseResult {
         'status' => null,
         'code' => null,
         'model' => null,
+        'criteria' => null,
+        'start' => null,
+        'size' => null,
     );
     protected $_result = array();
 
@@ -65,15 +69,31 @@ class RestResponseResult {
         return $jsonFormat ? json_encode($this->_result) : $jsonFormat;
     }
 
-    public function toArray() {
+    public function toArray($sortMetadataBykey = true) {
+        
+        if($sortMetadataBykey)
+            ksort($this->_metadata);
+        
         return array(
             'metadata' => $this->_metadata,
             'result' => $this->_result
         );
     }
     
-    public function setCriteria($criteria){
-        $this->_metadata['criteria'] = $criteria;
+    public function setCriteria(RestCriteria $criteria){        
+        $this->_metadata['criteria'] = $criteria->getParams();
+        $this->_metadata['start'] = (int)$criteria->getLimit()['offset'];
+        $this->_metadata['size'] = (int)$criteria->getLimit()['number'];        
     }
+    
+    public function setTotal($total){
+        $this->_metadata['total'] = (int) $total;
+    }
+    
+    public function setCount($count){
+        $this->_metadata['count'] = (int) $count;
+    }
+    
+    
 
 }

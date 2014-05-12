@@ -40,25 +40,34 @@ class RestController extends Controller {
         $genericModel = $this->getDefaultModel();
 
         
-//        var_dump($this->getRestRequest()->getCriteria(), __FILE__ . ' : ' . __LINE__);
-//        die();
-        $models = $genericModel->find($this->getRestRequest()->getCriteria()->getParams());
-
         $result = new Response\RestResponseResult();
         $result->setModel($this->getDefaultModel(true));
+        $result->setCriteria($this->getRestRequest()->getCriteria());
         
-        
-        $result->setResult($models->toArray());
-        $result->setCriteria($this->getRestRequest()->getCriteria()->getParams());
-        
+        try{
+            
+            $params = $this->getRestRequest()->getCriteria()->getParams();
+            
+            $models = $genericModel->find($params);
+
+            $result->setTotal($genericModel->count($params));
+            $result->setCount(count($models));
+            $result->setResult($models->toArray());
+            
+            
+            $result->setCode(200);
+            $result->setStatus('OK');
+        }  catch (\Exception $e){
+            
+            $result->setResult([$e->getMessage()]);
+
+            $result->setCode(400);
+            $result->setStatus('Bad request');
+        }
         $this->getRestResponse()->addResult($result);
         
         echo $this->getRestResponse();
-        die();
-        
-        $this->response->setJsonContent($result);
-
-        return $this->response;
+        die();        
 
     }
 
