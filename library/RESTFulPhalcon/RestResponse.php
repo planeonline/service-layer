@@ -71,7 +71,7 @@ class RestResponse {
         if ($result->isSuccess()) {
             $this->_metadata['success'] = $this->_metadata['success'] + 1;
         } else {
-            $this->_metadata['fialed'] = $this->_metadata['fialed'] + 1;
+            $this->_metadata['failed'] = $this->_metadata['failed'] + 1;
         }
 
         $this->_metadata['results'] = $this->_metadata['failed'] + $this->_metadata['success'];

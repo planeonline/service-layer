@@ -106,8 +106,7 @@ class RestRequest extends Request{
                 case 'GET':
                     $params = $this->getQuery();
                     break;
-                case 'POST':
-//                    $params = $this->get();
+                case 'POST' || 'PUT':
                     $params = (array) $this->getJsonRawBody();
                     break;
                 default:

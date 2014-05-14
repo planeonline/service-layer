@@ -15,8 +15,10 @@ class RestResponseResult {
     );
     protected $_result = array();
 
-    public function __construct($result = null, $metadata = null) {
+    public function __construct($method, $result = null, $metadata = null) {
 
+        $this->setMetadataBasedOnMethod($method);
+        
         if (!is_null($result)) {
             $this->_result = $result;
         }
@@ -69,7 +71,7 @@ class RestResponseResult {
         return $jsonFormat ? json_encode($this->_result) : $jsonFormat;
     }
 
-    public function toArray($sortMetadataBykey = true) {
+    public function toArray($sortMetadataBykey = false) {
         
         if($sortMetadataBykey)
             ksort($this->_metadata);
@@ -94,6 +96,28 @@ class RestResponseResult {
         $this->_metadata['count'] = (int) $count;
     }
     
-    
+    public function setMetadataBasedOnMethod($method){
+               
+        $metadataWhitelist = [];
+        
+        switch($method){
+            case "GET":
+                $metadataWhitelist = ['status','code','model','criteria','size','size'];
+                break;
+            case "POST":
+                $metadataWhitelist = ['status','code','model'];
+                break;
+            case "PUT":
+                break;
+            case "DELETE":
+                break;
+        }        
+                
+        foreach ($this->_metadata as $key => $value){
+            if(!in_array($key, $metadataWhitelist)){
+                unset($this->_metadata[$key]);
+            }
+        }
+    }
 
 }

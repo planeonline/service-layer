@@ -37,6 +37,12 @@ try {
         "action" => 'put',        
         "params" => 2
     ));
+    
+    $application->router->addDelete("#^/([a-zA-Z0-9\_\-]+)(/.*)*$#", array(
+        "controller" => 1,        
+        "action" => 'delete',        
+        "params" => 2
+    ));
 
     echo $application->handle()->getContent();
     

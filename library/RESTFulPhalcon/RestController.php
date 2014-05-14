@@ -40,7 +40,7 @@ class RestController extends Controller {
         $genericModel = $this->getDefaultModel();
 
         
-        $result = new Response\RestResponseResult();
+        $result = new Response\RestResponseResult($this->getRestRequest()->getMethod());
         $result->setModel($this->getDefaultModel(true));
         $result->setCriteria($this->getRestRequest()->getCriteria());
         
@@ -87,8 +87,8 @@ class RestController extends Controller {
             $model = $this->getDefaultModel();
 
             $model->assign((array) $data);            
-
-            $result = new Response\RestResponseResult();
+            
+            $result = new Response\RestResponseResult($this->getRestRequest()->getMethod());
             $result->setModel($this->getDefaultModel(true));
            if ($model->create()) {
                 $result->setCode("201");
@@ -102,11 +102,122 @@ class RestController extends Controller {
             $this->getRestResponse()->addResult($result);
         }
 
-
         echo $this->getRestResponse();
         die();
     }
 
+    public function putAction() {
+
+        $this->_setHeader();
+
+        $modelName = $this->getDefaultModel(true);
+        
+        $request = $this->getRestRequest();
+
+        $dataSet = $request->getParams(true);
+
+        if (!is_array($dataSet)) {
+            $dataSet = array($dataSet);
+        }
+                
+        foreach ($dataSet as $data) {
+            
+            $result = new Response\RestResponseResult($this->getRestRequest()->getMethod());
+            
+            $result->setModel($modelName);
+                
+            if(!isset($data->id)){
+                
+            }else{
+                
+               $genericModel = $this->getDefaultModel(); 
+               $model = $genericModel->findFirst("id = $data->id");
+               
+               foreach($data as $field => $value){
+                   
+                  if($field == 'id') continue;
+                                 
+                  
+                  if(!isset($model->$field)){
+                    $result->setCode("400");
+                    $result->setStatus('bad request');
+                    $result->setResult(["Field $field is not exists in $modelName model"]); 
+                    continue(2);
+                  }else{
+                    $model->$field = $value;                                        
+                  }
+               }
+               
+                if ($model->save()) {
+                    $result->setCode("200");
+                    $result->setStatus('updated');
+                    $result->setResult($model->dump());
+                } else {
+                    $result->setCode("400");
+                    $result->setStatus('bad request');
+                    $result->setResult($model->getValidators()->getMessages());
+                } 
+               
+            }
+            $this->getRestResponse()->addResult($result);
+        }
+
+        echo $this->getRestResponse();
+        die();
+    }
+    
+    public function deleteAction() {
+
+        $this->_setHeader();
+
+        $modelName = $this->getDefaultModel(true);
+        
+        $request = $this->getRestRequest();
+
+        $dataSet = $request->getParams(true);
+
+        if (!is_array($dataSet)) {
+            $dataSet = array($dataSet);
+        }
+                
+        foreach ($dataSet as $data) {
+            
+            $result = new Response\RestResponseResult($this->getRestRequest()->getMethod());
+            
+            $result->setModel($modelName);
+                
+            if(isset($data->id)){
+                
+                $genericModel = $this->getDefaultModel(); 
+                $model = $genericModel->findFirst("id = $data->id");
+               
+                if($model){
+                    
+                    $model->status = RestModel::STATUS_DELETED;
+                    
+                    if ($model->save()) {
+                        $result->setCode("200");
+                        $result->setStatus('deleted');
+                        $result->setResult($model->dump());
+                    } else {
+                        $result->setCode("400");
+                        $result->setStatus('bad request');
+                        $result->setResult($model->getValidators()->getMessages());
+                    } 
+                }else{
+                        $result->setCode("404");
+                        $result->setStatus('Not Found');
+                        $result->setResult(["There is no $modelName with id $data->id avilable"]);
+                }
+               
+            }
+            $this->getRestResponse()->addResult($result);
+        }
+
+        echo $this->getRestResponse();
+        die();
+    }
+    
     protected function _setHeader() {
         header('Content-Type: application/json');
     }
@@ -201,4 +312,8 @@ class RestController extends Controller {
         }
     }
 
+    
+    protected function _unsetModel(){
+        $this->_defaultModelName = null;
+    }
 }

@@ -13,6 +13,8 @@ class RestModel extends \Phalcon\Mvc\Model {
 
     protected $_validators;
 
+    const STATUS_DELETED = 0;
+    
     /**
      * 
      * @return Validation
