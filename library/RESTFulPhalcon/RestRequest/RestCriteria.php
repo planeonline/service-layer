@@ -175,7 +175,7 @@ class RestCriteria extends Criteria {
 
         if (is_null($this->_whereParams)) {
             $this->_whereParams = array();
-            $ignoreKeys = array('order', 'expand', 'start','size');
+            $ignoreKeys = array('_url','order', 'expand', 'start','size');
 
             foreach ($this->_originalParameters as $key => $value) {
                 if (!in_array($key, $ignoreKeys)) {

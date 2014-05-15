@@ -30,26 +30,28 @@ class RestResponse {
         $this->_metadata['url'] = $url;
     }
 
+    public function getUrl() {
+        return $this->_metadata['url'];
+    }
+
     public function setEndpoint($endpoint) {
         $endpoint = explode('?', $endpoint)[0];
         $this->_metadata['endpoint'] = $endpoint;
     }
 
-    public function addResult(Response\RestResponseResult $result) {
-        $this->_results[] = $result;
-        $this->_calculateCounts($result);
-    }
-    
-    public function setMethod($method){
-        $this->_metadata['method'] = $method;
-        
-        if($method == 'GET'){
-            unset($this->_metadata['results']);
-            unset($this->_metadata['success']);
-            unset($this->_metadata['failed']);
-        }
+    public function getEndpoint() {        
+        return $this->_metadata['endpoint'];
     }
 
+    public function addResult(Response\RestResponseResult $result) {
+        $this->_results[] = $result;
+        $this->_calculateCounts($result);       
+        
+        if(is_null($this->getMethod())){
+            $this->setMethod($result->getMethod());
+        }
+    }
+    
     /**
      * To return all results converted to array
      * @return array
@@ -60,6 +62,24 @@ class RestResponse {
             $results[] = $result->toArray();
         }
         return $results;
+    }
+    
+    public function setMethod($method){
+        $this->_metadata['method'] = $method;
+        
+        if($method == 'GET'){
+            unset($this->_metadata['results']);
+            unset($this->_metadata['success']);
+            unset($this->_metadata['failed']);
+        }else{
+            $this->_metadata['results'] = 0;
+            $this->_metadata['success'] = 0;
+            $this->_metadata['failed'] = 0;
+        }
+    }
+    
+    public function getMethod(){
+        return $this->_metadata['method'];
     }
 
     protected function _calculateCounts(Response\RestResponseResult $result) {

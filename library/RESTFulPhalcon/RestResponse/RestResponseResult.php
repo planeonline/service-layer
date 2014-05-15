@@ -13,7 +13,10 @@ class RestResponseResult {
         'start' => null,
         'size' => null,
     );
+    
     protected $_result = array();
+    
+    protected $_method;
 
     public function __construct($method, $result = null, $metadata = null) {
 
@@ -97,7 +100,8 @@ class RestResponseResult {
     }
     
     public function setMetadataBasedOnMethod($method){
-               
+              
+        $this->_method = $method;
         $metadataWhitelist = [];
         
         switch($method){
@@ -118,6 +122,10 @@ class RestResponseResult {
                 unset($this->_metadata[$key]);
             }
         }
+    }
+        
+    public function getMethod(){
+        return $this->_method;
     }
 
 }
