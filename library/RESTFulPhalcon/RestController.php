@@ -65,9 +65,9 @@ class RestController extends Controller {
             $result->setStatus('Bad request');
         }
         $this->getRestResponse()->addResult($result);
-        
+                
         echo $this->getRestResponse();
-        die();        
+//        die();        
 
     }
 
@@ -219,7 +219,7 @@ class RestController extends Controller {
     }
     
     protected function _setHeader() {
-        header('Content-Type: application/json');
+        @header('Content-Type: application/json');        
     }
 
     /**

@@ -55,9 +55,12 @@ class PlaneControllerTest extends \UnitTestCase // \PHPUnit_Framework_TestCase
 
     public function testIndexAction(){
         
-         $_SERVER["REQUEST_METHOD"] = "GET";
+        $this->expectOutputString('{"metadata":{"url":":","endpoint":"","method":"GET"},"results":[{"metadata":{"status":"OK","code":200,"model":"Plane","criteria":{"conditions":"id = \"2\"","limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":1,"count":1},"result":[{"id":"2","user":"2","make":"3","title":"Skyhawk","model":"127","description":"The Cessna 172 001","lastupdated":"2014-05-14 18:59:49","status":null}]}]}');
         
-        $raw = array("_url" => $this->_url, "expands"=> "make");
+        $_SERVER["REQUEST_METHOD"] = "GET";
+        
+        //$raw = array("_url" => $this->_url, "expands"=> "make");
+        $raw = array("_url" => $this->_url, "id"=> "2");
         
         $_GET += $raw;
         
