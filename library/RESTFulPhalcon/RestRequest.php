@@ -39,9 +39,7 @@ class RestRequest extends Request{
     
     protected function _initCriteriaOrders(){
         
-        $order = $this->_params['order'];
-        var_dump($order, __FILE__ . ' : ' . __LINE__);
-        die();
+        $order = $this->_params['order'];        
         $this->_criteria->orderBy('id');
     }
     
@@ -103,8 +101,8 @@ class RestRequest extends Request{
     protected function _initParams(){
         
         switch ($this->getMethod()) {
-                case 'GET':
-                    $params = $this->getQuery();
+                case 'GET':                    
+                    $params = $this->getQuery();                    
                     break;
                 case 'POST' || 'PUT':
                     $params = (array) $this->getJsonRawBody();
