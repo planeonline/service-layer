@@ -1,9 +1,9 @@
 <?php
 
-use RESTFulPhalcon\RestModelValidator,
+use RESTFulPhalcon\Model\Validator,
     Phalcon\Mvc\Model\Validator\StringLength;
 
-class PlaneValidator extends RestModelValidator {
+class PlaneValidator extends Validator {
     
     public function addValidators() {
         $this->add(new StringLength(array(

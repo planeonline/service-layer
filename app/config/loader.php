@@ -19,8 +19,9 @@ $loader->registerDirs(
 $loader->registerNamespaces(
         array(
            'RESTFulPhalcon' => '../library/RESTFulPhalcon', 
-           'RESTFulPhalcon\Response' => '../library/RESTFulPhalcon/RestResponse', 
-           'RESTFulPhalcon\Request' => '../library/RESTFulPhalcon/RestRequest', 
+           'RESTFulPhalcon\Model' => '../library/RESTFulPhalcon/RestModel',
+           'RESTFulPhalcon\Response' => '../library/RESTFulPhalcon/RestResponse',
+           'RESTFulPhalcon\Request' => '../library/RESTFulPhalcon/RestRequest',
         )
 );
 
