@@ -90,7 +90,7 @@ class RestController extends Controller {
             
             $result = new Response\RestResponseResult($this->getRestRequest()->getMethod());
             $result->setModel($this->getDefaultModel(true));
-           if ($model->create()) {
+            if ($model->create()) {
                 $result->setCode("201");
                 $result->setStatus('created');
                 $result->setResult($model->dump());

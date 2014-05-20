@@ -2,7 +2,7 @@
 
 namespace RESTFulPhalcon;
 
-use Phalcon\Mvc\Model\Validator\Exclusionin;
+use RESTFulPhalcon\Model\Validator;
 
 /**
  * Description of RestModel
@@ -17,21 +17,25 @@ class RestModel extends \Phalcon\Mvc\Model {
     const STATUS_DELETED = 0;
     const STATUS_LOCKED = 1;
     const STATUS_ACTIVE = 2;
-    
+
     /**
-     * 
+     *
      * @return Validation
      */
-    public function getValidators() {
-
-        if (is_null($this->_validators)) {
-            $this->_validators = new \PlaneValidator();
-        }
-
-        return $this->_validators;
-    }
+//    public function getValidators() {
+//
+//        if (is_null($this->_validators)) {
+//            $this->_validators = new \PlaneValidator();
+//        }
+//
+//        return $this->_validators;
+//    }
 
     public function validation($data = null) {
+
+        if(!method_exists($this,'getValidators')){
+            return true;
+        }
 
         if (!is_null($data)) {
             $this->assign($data);

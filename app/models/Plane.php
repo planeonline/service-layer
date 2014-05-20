@@ -54,6 +54,20 @@ class Plane extends RestModel{
         $this->skipAttributesOnCreate(array('lastupdated'));
         $this->skipAttributesOnUpdate(array('lastupdated'));
     }
+
+
+    /**
+     *
+     * @return Validation
+     */
+    public function getValidators() {
+
+        if (is_null($this->_validators)) {
+            $this->_validators = new \PlaneValidator();
+        }
+
+        return $this->_validators;
+    }
     
     
 }

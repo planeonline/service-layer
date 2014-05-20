@@ -13,7 +13,7 @@ abstract class Validator implements \Iterator {
     }
 
 
-    abstract public function addValidators();    
+    abstract public function addValidators();
     
     protected function getModelName(){
         if(is_null($this->_modelName)){
@@ -29,18 +29,21 @@ abstract class Validator implements \Iterator {
     
     public function getMessages(){
         $messages = array();
-        foreach($this->_validators as $validator){
-            
-            $validatorMessages = array();
-            if(!is_null($validator->getMessages())){
-                foreach($validator->getMessages() as $message){
-                    $validatorMessages[][$message->getField()] = $message->getMessage();
+
+        if(!is_null($this->_validators)){
+            foreach($this->_validators as $validator){
+
+                $validatorMessages = array();
+                if(!is_null($validator->getMessages())){
+                    foreach($validator->getMessages() as $message){
+                        $validatorMessages[$message->getField()] = $message->getMessage();
+                    }
                 }
+                $messages[] = $validatorMessages;
             }
-            $messages['Validation messages'] = $validatorMessages;
         }
         
-        return $messages;
+        return array_values(array_filter($messages));
     }
 
     public function current() {
