@@ -24,7 +24,8 @@ class Plane extends RestModel{
             'title' => 'title',
             'model' => 'model',
             'description' => 'description',
-            'lastupdated' => 'lastupdated',
+            'created' => 'created',
+            'updated' => 'updated',
             'status' => 'status',
             'image' => 'image'
         );

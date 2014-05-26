@@ -219,7 +219,7 @@ class RestController extends Controller {
     }
     
     protected function _setHeader() {
-        //@header('Content-Type: application/json');        
+        @header('Content-Type: application/json');
     }
 
     /**
