@@ -22,6 +22,6 @@ Scenario: Post multiple plane to the service layer
   When I curl it as json using "POST" to "http://service.planeonline.local/plane" 
   Then I should get:
     """
-    {"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"POST","results":3,"success":2,"failed":1},"results":[{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":"2","make":"3","title":"Skyhawk","model":"127","description":"The Cessna 172 001","id":"???"}},{"metadata":{"status":"bad request","code":"400","model":"Plane"},"result":{"Validation messages":[{"title":"Minimum number of charcters for title is 4"}]}},{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":"2","make":"3","title":"Skyhawk","model":"127","description":"The Cessna 172 003","id":"???"}}]}
+    {"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"POST","results":3,"success":2,"failed":1},"results":[{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":"2","make":"3","title":"Skyhawk","model":"127","description":"The Cessna 172 001","id":"???"}},{"metadata":{"status":"bad request","code":"400","model":"Plane"},"result":[{"title":"Minimum number of characters for title is 4"}]},{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":"2","make":"3","title":"Skyhawk","model":"127","description":"The Cessna 172 003","id":"???"}}]}
     """
 

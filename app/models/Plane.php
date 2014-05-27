@@ -49,13 +49,6 @@ class Plane extends RestModel{
         $this->_setSkips();
         
     }
-    
-    
-    protected function _setSkips() {
-        $this->skipAttributesOnCreate(array('lastupdated'));
-        $this->skipAttributesOnUpdate(array('lastupdated'));
-    }
-
 
     /**
      *
@@ -69,6 +62,5 @@ class Plane extends RestModel{
 
         return $this->_validators;
     }
-    
     
 }

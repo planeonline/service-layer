@@ -52,8 +52,8 @@ class RestModel extends \Phalcon\Mvc\Model {
 
         if ($this->validation()) {
             try {
-                parent::create($data, $whiteList);
-                return true;
+                $result = parent::create($data, $whiteList);
+                return $result;
             } catch (Exception $e) {
                 print_r($e->getMessage());
                 die();
@@ -61,6 +61,14 @@ class RestModel extends \Phalcon\Mvc\Model {
         } else {
             return false;
         }
+    }
+
+
+
+    protected function _setSkips() {
+        $this->skipAttributesOnCreate(array('created'));
+        $this->skipAttributesOnCreate(array('updated'));
+        $this->skipAttributesOnUpdate(array('updated'));
     }
 
 }
