@@ -112,7 +112,8 @@ class RestRequestTest extends \PHPUnit_Framework_TestCase
             'description' => '5',
             'lastupdated' => '14-05-01',
             'status' => '7',
-            'order' => '[id desc,name,test]'];
+            'order' => '[id desc,name,test]',
+            'id' => '2'];
 
         $this->assertEquals($params,$this->object->getParams());
         unset($params['_url']);
