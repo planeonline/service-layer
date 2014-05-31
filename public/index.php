@@ -6,10 +6,13 @@ date_default_timezone_set('Europe/London');
 
 try {
 
+    $environment = getenv('ENVIRONMENT');
+    $configName = 'config-' . strtolower($environment) . '.ini';
+
     /**
      * Read the configuration
      */
-    $config = new \Phalcon\Config\Adapter\Ini(__DIR__ . '/../app/config/config.ini');
+    $config = new \Phalcon\Config\Adapter\Ini(__DIR__ . '/../app/config/'.$configName);
 
     /**
      * Read auto-loader

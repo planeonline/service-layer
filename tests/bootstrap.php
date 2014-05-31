@@ -11,9 +11,13 @@ set_include_path(
     ROOT_PATH . PATH_SEPARATOR . get_include_path()
 );
 
+if(false !== strpos(ROOT_PATH,'jenkins')){
+    $configPath = ROOT_PATH . '/../app/config/config-ci-test.ini';
+}else{
+    $configPath = ROOT_PATH . '/../app/config/config-test.ini';
+}
 
-
-$config = new \Phalcon\Config\Adapter\Ini(ROOT_PATH . '/../app/config/config.ini');
+$config = new \Phalcon\Config\Adapter\Ini($configPath);
 
 include ROOT_PATH . "/../app/config/loader.php";
 

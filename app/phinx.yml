@@ -30,3 +30,21 @@ environments:
         pass: 'planepass'
         port: 3306
         charset: utf8
+
+    ci:
+        adapter: mysql
+        host: localhost
+        name: planeonline_ci
+        user: planeuser_ci
+        pass: 'planepass'
+        port: 3306
+        charset: utf8
+
+    ci_test:
+        adapter: mysql
+        host: localhost
+        name: planeonline_ci_test
+        user: planeuser_ci_test
+        pass: 'planepass'
+        port: 3306
+        charset: utf8

@@ -26,8 +26,15 @@ class PlaneControllerTest extends \UnitTestCase // \PHPUnit_Framework_TestCase
     public function setUp(\Phalcon\DiInterface $di = NULL, \Phalcon\Config $config = NULL)
     {                       
         $_SERVER["REQUEST_METHOD"] = "GET";
-        
-        $config = new \Phalcon\Config\Adapter\Ini(__DIR__ . '/../../../app/config/config.ini');
+
+
+        if(false !== strpos(ROOT_PATH,'jenkins')){
+            $configPath = ROOT_PATH . '/../app/config/config-ci-test.ini';
+        }else{
+            $configPath = ROOT_PATH . '/../app/config/config-test.ini';
+        }
+
+        $config = new \Phalcon\Config\Adapter\Ini($configPath);
         
         parent::setUp($di,$config);
         $this->_controllerObj = new PlaneController();                
@@ -58,7 +65,7 @@ class PlaneControllerTest extends \UnitTestCase // \PHPUnit_Framework_TestCase
 
     public function testIndexAction(){
         
-        $this->expectOutputString('{"metadata":{"url":":","endpoint":"","method":"GET"},"results":[{"metadata":{"status":"OK","code":200,"model":"Plane","criteria":{"conditions":"id = \"2\"","limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":1,"count":1},"result":[{"id":"2","user":"1","make":"1","title":"Skyhawk","description":"Introducing the world\u2019s most popular aircraft. With more than 43,000 aircraft with several model variants delivered, the Skyhawk is the best-selling, most-flown plane ever built. It also enjoys a distinguished reputation as the safest general aviation aircraft available. The Skyhawk is a top performer, showcasing the agility, stability, and durable strength that Cessna is famous for.","created":"2014-05-28 20:53:29","updated":"2014-05-28 20:53:29"}]}]}');
+        $this->expectOutputString('{"metadata":{"url":":","endpoint":"","method":"GET"},"results":[{"metadata":{"status":"OK","code":200,"model":"Plane","criteria":{"conditions":"id = \"2\"","limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":0,"count":0},"result":[]}]}');
         
         
         
