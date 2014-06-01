@@ -44,7 +44,7 @@ environments:
         adapter: mysql
         host: localhost
         name: planeonline_ci_test
-        user: planeuser_ci_test
+        user: planeuser_cit
         pass: 'planepass'
         port: 3306
         charset: utf8
