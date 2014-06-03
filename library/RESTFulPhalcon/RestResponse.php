@@ -2,6 +2,8 @@
 
 namespace RESTFulPhalcon;
 
+use RESTFulPhalcon\RestResponse\RestResponseResult;
+
 class RestResponse {
 
     protected $_metadata = array(
@@ -43,7 +45,7 @@ class RestResponse {
         return $this->_metadata['endpoint'];
     }
 
-    public function addResult(Response\RestResponseResult $result) {
+    public function addResult(RestResponseResult $result) {
         $this->_results[] = $result;
         $this->_calculateCounts($result);       
         
@@ -82,7 +84,7 @@ class RestResponse {
         return $this->_metadata['method'];
     }
 
-    protected function _calculateCounts(Response\RestResponseResult $result) {
+    protected function _calculateCounts(RestResponseResult $result) {
 
         if(!isset($this->_metadata['success']) || !isset($this->_metadata['failed']) || !isset($this->_metadata['results'])){
             return;

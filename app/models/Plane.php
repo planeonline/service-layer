@@ -1,7 +1,5 @@
 <?php
 /**
- * Plane model class
- *
  * Copyright 2014 Takeaway IT Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +26,7 @@
 use RESTFulPhalcon\RestModel;
 
 /**
- * Class RestModel
+ * Class Plane
  *
  * PHP version 5.4
  *

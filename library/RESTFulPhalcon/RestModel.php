@@ -1,7 +1,5 @@
 <?php
 /**
- * RestModel Class Doc Comment
- *
  * Copyright 2014 Takeaway IT Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,7 +82,7 @@ class RestModel extends \Phalcon\Mvc\Model
      * This is a wrapper for the phalcon's original create method
      * to allow us to treat potential Exceptions in manner which suits our goal
      *
-     * @param array $data      array of key/value pairs to be created
+     * @param array $data array of key/value pairs to be created
      * @param array $whiteList list of fields that are white listed
      *
      * @return bool

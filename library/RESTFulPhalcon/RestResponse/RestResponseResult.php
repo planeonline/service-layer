@@ -1,6 +1,6 @@
 <?php
 
-namespace RESTFulPhalcon\Response;
+namespace RESTFulPhalcon\RestResponse;
 use RESTFulPhalcon\Request\RestCriteria;
 
 class RestResponseResult {
