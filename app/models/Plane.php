@@ -1,20 +1,51 @@
 <?php
+/**
+ * Plane model class
+ *
+ * Copyright 2014 Takeaway IT Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * PHP version 5.4
+ *
+ * @category Model
+ * @package  RESTFulPhalcon
+ * @author   Ali Bahman <abn@webit4.me>
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     http://www.planeonline.co.uk/
+ */
 
 use RESTFulPhalcon\RestModel;
-use Phalcon\Mvc\Model\Validator\Numericality as NumericalityValidator;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- * Description of Plane
+ * Class RestModel
  *
- * @author ABN
+ * PHP version 5.4
+ *
+ * @category Model
+ * @package  RESTFulPhalcon
+ * @author   Ali Bahman <abn@webit4.me>
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     http://www.planeonline.co.uk/
  */
-class Plane extends RestModel{
-        
+class Plane extends RestModel
+{
+
+    /**
+     * to return a hash to be used in the RestModel to map field names
+     *
+     * @return array
+     */
     protected function columnMap()
     {
         return array(
@@ -30,37 +61,50 @@ class Plane extends RestModel{
             'image' => 'image'
         );
     }
-    
-    public function _setDynamicFields()
+
+    /**
+     * To set dynamic values for certain fields
+     *
+     * @return null
+     */
+    public function setDynamicFields()
     {
         $this->image = $this->Image->count();
     }
-    
+
+    /**
+     * Overwriting RestModel initialize method to define model's relationships
+     *
+     * @return null|void
+     */
     public function initialize()
-    {   
-        $this->belongsTo('make', 'Make', 'id');        
-        $this->belongsTo('user', 'User', 'id');        
-        $this->hasMany('id', 'Image', 'plane', array(
-            'foreignKey' => array(
-                'message' => 'Plane cannot be deleted because it has Images'
+    {
+        parent::initialize();
+
+        $this->belongsTo('make', 'Make', 'id');
+        $this->belongsTo('user', 'User', 'id');
+        $this->hasMany(
+            'id', 'Image', 'plane', array(
+                'foreignKey' => array(
+                    'message' => 'Plane cannot be deleted because it has Images'
+                )
             )
-        ));
-        
-        $this->_setSkips();
-        
+        );
     }
 
     /**
+     * This method will be called during validation
+     * to fetch available validators for this model
      *
-     * @return Validation
+     * @return RESTFulPhalcon\Model\Validator
      */
-    public function getValidators() {
-
-        if (is_null($this->_validators)) {
-            $this->_validators = new \PlaneValidator();
+    public function getValidators()
+    {
+        if (is_null($this->validators)) {
+            $this->validators = new \PlaneValidator();
         }
 
-        return $this->_validators;
+        return $this->validators;
     }
-    
+
 }
