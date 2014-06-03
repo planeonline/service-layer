@@ -1,4 +1,27 @@
 <?php
+/**
+ * Copyright 2014 Takeaway IT Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * PHP version 5.4
+ *
+ * @category Controller
+ * @package  RESTFulPhalcon
+ * @author   Ali Bahman <abn@webit4.me>
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     http://www.planeonline.co.uk/
+ */
 
 namespace RESTFulPhalcon;
 
@@ -7,68 +30,124 @@ use Phalcon\Mvc\Model\Criteria;
 use RESTFulPhalcon\Request\RestCriteria;
 
 /**
- * Description of RestRequest
+ * Class RestRequest
  *
- * @author Ali Bahman <abn@webit4.me>
+ * PHP version 5.4
+ *
+ * @category Request
+ * @package  RESTFulPhalcon
+ * @author   Ali Bahman <abn@webit4.me>
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     http://www.planeonline.co.uk/
  */
-class RestRequest extends Request{
+class RestRequest extends Request
+{
 
-    protected $_criteria;
-    
-    protected $_expands;
-    
-    protected $_params;
-    
-    public function __construct($params = null) {
-        
-        if(is_null($params)){
-            $this->_initParams();
-        }else{
+    protected $criteria;
+
+    protected $expands;
+
+    protected $params;
+
+    /**
+     * Class constructor
+     *
+     * @param null|array $params list of received parameters
+     *
+     * @return null
+     */
+    public function __construct($params = null)
+    {
+
+        if (is_null($params)) {
+            $this->initParams();
+        } else {
             $this->setParams($params);
         }
     }
-    
-    protected function _initCriteria(){
-        $this->_criteria = new RestCriteria($this);          
-        
-//        
-//        $this->_criteria->where("id = :id:");
-//        $this->_criteria->inWhere('id', [1, 2, 3]);
-//        $this->_initCriteriaOrders();
+
+    /**
+     * To instantiate a rest criteria object
+     *
+     * @return null
+     */
+    protected function initCriteria()
+    {
+        $this->criteria = new RestCriteria($this);
+
+        // $this->_criteria->where("id = :id:");
+        // $this->_criteria->inWhere('id', [1, 2, 3]);
+        // $this->_initCriteriaOrders();
     }
-    
-    protected function _initCriteriaOrders(){
-        
-        $order = $this->_params['order'];        
-        $this->_criteria->orderBy('id');
+
+    /**
+     * To set this request's criteria's order
+     *
+     * @return null
+     */
+    protected function initCriteriaOrders()
+    {
+        $order = $this->params['order'];
+        $this->criteria->orderBy($order);
     }
-    
-    public function setCriteria($criteria = null){
-        
-        if(is_null($criteria)){
-            $this->_initCriteria();
-        }else{
-            $this->_criteria = $criteria;
+
+    /**
+     * Setter method for this request's criteria
+     *
+     * @param null|RESTFulPhalcon/RestCriteria $criteria a Criteria to
+     * be attached to this this request
+     *
+     * @return null
+     */
+    public function setCriteria($criteria = null)
+    {
+
+        if (is_null($criteria)) {
+            $this->initCriteria();
+        } else {
+            $this->criteria = $criteria;
         }
-        
+
     }
-    
-    public function getCriteria(){
-        
-        if(is_null($this->_criteria)){
+
+    /**
+     * Getter method for this request's criteria
+     *
+     * @return RESTFulPhalcon/RestCriteria
+     */
+    public function getCriteria()
+    {
+        if (is_null($this->criteria)) {
             $this->setCriteria();
         }
-        
-        return $this->_criteria;
+
+        return $this->criteria;
     }
-    
-    protected function _initExpands(){
-        $this->_expands = array();
+
+    /**
+     * To initialise request's expands parameters
+     *
+     * @return null
+     */
+    protected function initExpands()
+    {
+        $this->expands = array();
     }
-    public function setExpands($expands,$heirarchical = true){
-        
+
+    /**
+     * Setter method for this request's expands
+     * It will receive and string and extract expandable fields from it
+     *
+     * @param string $expands   List of expandable fields
+     * @param bool   $recursive To define if it requires recursive action
+     *
+     * @return array
+     */
+    public function setExpands($expands, $recursive = true)
+    {
+
         $paths = explode(',', $expands);
-        if (!$heirarchical) {
+        if (!$recursive) {
             return $paths;
         }
         $expand = array();
@@ -87,54 +166,86 @@ class RestRequest extends Request{
             }
         }
 
-        $this->_expands = $expand;
-        
+        $this->expands = $expand;
+
     }
-    
-    public function getExpands(){
-        if(is_null($this->_expands)){
-            $this->_initExpands();
+
+    /**
+     * Getter method for this request's expand params
+     *
+     * @return array
+     */
+    public function getExpands()
+    {
+        if (is_null($this->expands)) {
+            $this->initExpands();
         }
-        return $this->_expands;
+        return $this->expands;
     }
-    
-    protected function _initParams(){
-        
+
+    /**
+     * To gather appropriate set of parameters based on the received
+     * request's method and send it to be set
+     *
+     * @return null
+     */
+    protected function initParams()
+    {
         switch ($this->getMethod()) {
-                case 'GET':                    
-                    $params = $this->getQuery();                    
-                    break;
-                case 'POST' || 'PUT':
-                    $params = (array) $this->getJsonRawBody();
-                    break;
-                default:
-                    $params = array();
-            } 
-            
+        case 'GET':
+                $params = $this->getQuery();
+            break;
+        case 'POST' || 'PUT':
+                $params = (array)$this->getJsonRawBody();
+            break;
+        default:
+                $params = array();
+        }
+
         $this->setParams($params);
-    }    
-    
-    public function setParams($params){
-        $this->_params = $params;
     }
-    
-    public function getParams($publicOnly = false){
-        if(is_null($this->_params)){
-            $this->_initParams();
+
+    /**
+     * Setter method for this request's params
+     *
+     * @param array $params parameters to set
+     *
+     * @return null
+     */
+    public function setParams($params)
+    {
+        $this->params = $params;
+    }
+
+    /**
+     * Getter method for this request's params
+     *
+     * @param bool $publicOnly to indicate if we need to hide general prams
+     * e.g. _url
+     *
+     * @return array
+     */
+    public function getParams($publicOnly = false)
+    {
+        if (is_null($this->params)) {
+            $this->initParams();
         }
-        
-        $params = $this->_params;
-        
-        if($publicOnly){                 
-            array_walk($params, function(&$value,$key) use(&$params){                
-                if(substr($key,0,1) == '_'){                    
-                    unset($params[$key]);
+
+        $params = $this->params;
+
+        if ($publicOnly) {
+            array_walk(
+                $params,
+                function (&$value, $key) use (&$params) {
+                    if (substr($key, 0, 1) == '_') {
+                        unset($params[$key]);
+                    }
                 }
-            });
+            );
         }
-        
+
         return $params;
-        
+
     }
-        
+
 }
