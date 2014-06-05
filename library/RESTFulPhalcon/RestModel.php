@@ -16,7 +16,7 @@
  *
  * PHP version 5.4
  *
- * @category Model
+ * @category RESTFul_API
  * @package  RESTFulPhalcon
  * @author   Ali Bahman <abn@webit4.me>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
@@ -26,14 +26,14 @@
 namespace RESTFulPhalcon;
 
 use Phalcon\Mvc\Model\Exception;
-use RESTFulPhalcon\Model\Validator;
+use RESTFulPhalcon\RestModel\Validator;
 
 /**
  * Class RestModel
  *
  * PHP version 5.4
  *
- * @category Model
+ * @category RESTFul_API
  * @package  RESTFulPhalcon
  * @author   Ali Bahman <abn@webit4.me>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
@@ -82,7 +82,7 @@ class RestModel extends \Phalcon\Mvc\Model
      * This is a wrapper for the phalcon's original create method
      * to allow us to treat potential Exceptions in manner which suits our goal
      *
-     * @param array $data array of key/value pairs to be created
+     * @param array $data      array of key/value pairs to be created
      * @param array $whiteList list of fields that are white listed
      *
      * @return bool

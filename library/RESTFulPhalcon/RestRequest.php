@@ -16,7 +16,7 @@
  *
  * PHP version 5.4
  *
- * @category Controller
+ * @category RESTFul_API
  * @package  RESTFulPhalcon
  * @author   Ali Bahman <abn@webit4.me>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
@@ -27,14 +27,14 @@ namespace RESTFulPhalcon;
 
 use Phalcon\Http\Request;
 use Phalcon\Mvc\Model\Criteria;
-use RESTFulPhalcon\Request\RestCriteria;
+use RESTFulPhalcon\RestRequest\RestCriteria;
 
 /**
  * Class RestRequest
  *
  * PHP version 5.4
  *
- * @category Request
+ * @category RESTFul_API
  * @package  RESTFulPhalcon
  * @author   Ali Bahman <abn@webit4.me>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0

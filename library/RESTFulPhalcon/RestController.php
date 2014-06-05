@@ -16,7 +16,7 @@
  *
  * PHP version 5.4
  *
- * @category Controller
+ * @category RESTFul_API
  * @package  RESTFulPhalcon
  * @author   Ali Bahman <abn@webit4.me>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
@@ -34,7 +34,7 @@ use Phalcon\Mvc\Controller,
  *
  * PHP version 5.4
  *
- * @category Model
+ * @category RESTFul_API
  * @package  RESTFulPhalcon
  * @author   Ali Bahman <abn@webit4.me>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
