@@ -94,7 +94,7 @@ class Plane extends RestModel
      * This method will be called during validation
      * to fetch available validators for this model
      *
-     * @return RESTFulPhalcon\Model\Validator
+     * @return RESTFulPhalcon\RestModel\Validator
      */
     public function getValidators()
     {

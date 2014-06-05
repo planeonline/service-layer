@@ -1,6 +1,6 @@
 <?php
 
-use RESTFulPhalcon\Model\Validator,
+use RESTFulPhalcon\RestModel\Validator,
     Phalcon\Mvc\Model\Validator\StringLength,
     Phalcon\Mvc\Model\Validator\Numericality;
 
