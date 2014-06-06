@@ -17,6 +17,8 @@ if(false !== strpos(ROOT_PATH,'jenkins')){
     $configPath = ROOT_PATH . '/../app/config/config-test.ini';
 }
 
+define('CONFIG_PATH', $configPath);
+
 $config = new \Phalcon\Config\Adapter\Ini($configPath);
 
 include ROOT_PATH . "/../app/config/loader.php";
@@ -33,7 +35,9 @@ $loader->registerDirs(array(
 $loader->registerNamespaces(
         array(
            'RESTFulPhalcon' => '../library/RESTFulPhalcon', 
-           'RESTFulPhalcon\Response' => '../library/RESTFulPhalcon/RestResponse', 
+           'RESTFulPhalcon\RestResponse' => '../library/RESTFulPhalcon/RestResponse',
+           'RESTFulPhalcon\RestRequest' => '../library/RESTFulPhalcon/RestRequest',
+           'RESTFulPhalcon\RestModel' => '../library/RESTFulPhalcon/RestModel',
            'Phalcon' => '../library/incubator/Library/Phalcon/'
         )
 );
