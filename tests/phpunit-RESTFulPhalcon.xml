@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="true">
-    <testsuite name="Planeon - Testsuite">
-        <directory>./app</directory>
+    <testsuite name="RESTFulPhalcon - Testsuite">
+        <directory>./library/RESTFulPhalcon/</directory>
     </testsuite>
 </phpunit>
