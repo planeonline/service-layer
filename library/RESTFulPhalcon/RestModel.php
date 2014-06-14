@@ -39,7 +39,7 @@ use RESTFulPhalcon\RestModel\Validator;
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link     http://www.planeonline.co.uk/
  */
-class RestModel extends \Phalcon\Mvc\Model
+abstract class RestModel extends \Phalcon\Mvc\Model
 {
 
     protected $validators;
