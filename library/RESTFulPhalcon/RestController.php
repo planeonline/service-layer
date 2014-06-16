@@ -27,7 +27,8 @@ namespace RESTFulPhalcon;
 
 use Phalcon\Mvc\Controller,
     RESTFulPhalcon\RestRequest as RestRequest,
-    RESTFulPhalcon\RestResponse\RestResponseResult;
+    RESTFulPhalcon\RestResponse\RestResponseResult,
+    RESTFulPhalcon\RestModel\Exception as RestModelException;
 
 /**
  * Class RestController
@@ -72,7 +73,6 @@ class RestController extends Controller
 
         $genericModel = $this->getDefaultModel();
 
-
         $result = new RestResponseResult($this->getRestRequest()->getMethod());
         $result->setModel($this->getDefaultModel(true));
         $result->setCriteria($this->getRestRequest()->getCriteria());
@@ -97,7 +97,9 @@ class RestController extends Controller
             $result->setCode(400);
             $result->setStatus('Bad request');
         }
+
         $this->getRestResponse()->addResult($result);
+
 
         echo $this->getRestResponse();
 
@@ -356,7 +358,7 @@ class RestController extends Controller
         $modelName = str_replace('Controller', '', $className);
 
         if (!class_exists($modelName)) {
-            throw new Exception("Guessed model \"$modelName\" is not exists");
+            throw new RestModelException("Guessed model \"$modelName\" is not exists");
         }
 
         return $modelName;

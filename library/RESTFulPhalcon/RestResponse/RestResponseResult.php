@@ -178,6 +178,16 @@ class RestResponseResult
      */
     public function setResult(array $data)
     {
+
+        array_walk($data,function(&$item, $key){
+
+            $formated = array();
+            foreach($item as $k=>$v){
+                $formated[$k] = is_numeric($v)? intval($v): $v;
+            }
+            $item = $formated;
+        });
+
         $this->result = $data;
     }
 

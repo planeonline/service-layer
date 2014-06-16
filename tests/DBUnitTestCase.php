@@ -89,6 +89,8 @@ abstract class DBUnitTestCase extends DBPhalconTestCase {
      */
     protected function getDataSet()
     {
+
+//        return $this->createMySQLXMLDataSet($this->getFixture());
         return new PHPUnit_Extensions_Database_DataSet_YamlDataSet(
             $this->getFixture()
         );
