@@ -29,10 +29,11 @@ class RestModelTest extends \DBUnitTestCase
         parent::setUp($di,$config);
 
         $this->object = $this->getMockBuilder('RESTFulPhalcon\RestModel')
-            ->setMockClassName('plane')
+            ->setMockClassName('make')
             ->setMethods(array('getValidators'))
             ->getMock();
 
+//        $this->object = $this->getMock('\RESTFulPhalcon\RestModel',null,array(),'make');
 
         $this->validator = $this->getMockForAbstractClass('RESTFulPhalcon\RestModel\Validator',array(),'PlaneValidator');
 
@@ -51,7 +52,7 @@ class RestModelTest extends \DBUnitTestCase
     }
 
     protected function getFixture(){
-        return dirname(__FILE__)."/fixtures/planes.yml";
+        return dirname(__FILE__)."/fixtures/makes.yml";
     }
 
     /**
@@ -102,18 +103,18 @@ class RestModelTest extends \DBUnitTestCase
     public function testCreate()
     {
 
-        $this->truncate('plane');
-        $this->assertEquals(0,$this->getConnection()->getRowCount('plane'), "Plane's table expected to be empty");
+        $this->truncate('make');
+        $this->assertEquals(0,$this->getConnection()->getRowCount('make'), "Plane's table expected to be empty");
 
-        $plane = $this->getDataSet()->getTable('plane')->getRow(0);
+        $make = $this->getDataSet()->getTable('make')->getRow(0);
 
-        unset($plane['id']);
-        unset($plane['created']);
-        unset($plane['updated']);
+        unset($make['id']);
+        unset($make['created']);
+        unset($make['updated']);
 
 
-        $this->assertTrue($this->object->create($plane));
-        $this->assertEquals(1,$this->getConnection()->getRowCount('plane'), "Failed inserting record");
+        $this->assertTrue($this->object->create($make));
+        $this->assertEquals(1,$this->getConnection()->getRowCount('make'), "Failed inserting record");
 
 
     }
