@@ -95,7 +95,7 @@ abstract class RestController extends Controller
             $result->setResult([$e->getMessage()]);
 
             $result->setCode(400);
-            $result->setStatus('Bad request');
+            $result->setStatus('Bad get request');
         }
 
         $this->getRestResponse()->addResult($result);
@@ -136,14 +136,14 @@ abstract class RestController extends Controller
                 $result->setResult($model->dump());
             } else {
                 $result->setCode("400");
-                $result->setStatus('bad request');
+                $result->setStatus('bad post request');
                 $result->setResult($model->getValidators()->getMessages());
             }
             $this->getRestResponse()->addResult($result);
         }
 
         echo $this->getRestResponse();
-        die();
+//        die();
     }
 
     /**
@@ -162,18 +162,30 @@ abstract class RestController extends Controller
 
         $dataSet = $request->getParams(true);
 
+        var_dump($modelName,$dataSet);
+//        die();
         if (!is_array($dataSet)) {
             $dataSet = array($dataSet);
         }
 
+        var_dump($modelName,$dataSet);
+//        die();
+
         foreach ($dataSet as $data) {
+
+
 
             $result = new RestResponseResult($this->getRestRequest()->getMethod());
 
             $result->setModel($modelName);
 
+            var_dump($data,$dataSet);
+//            die();
+
             if (!isset($data->id)) {
 
+//                var_dump($data);
+//                die();
             } else {
 
                 $genericModel = $this->getDefaultModel();
@@ -188,7 +200,7 @@ abstract class RestController extends Controller
 
                     if (!isset($model->$field)) {
                         $result->setCode("400");
-                        $result->setStatus('bad request');
+                        $result->setStatus('bad put request');
                         $result->setResult(
                             ["Field $field is not exists in $modelName model"]
                         );
@@ -204,7 +216,7 @@ abstract class RestController extends Controller
                     $result->setResult($model->dump());
                 } else {
                     $result->setCode("400");
-                    $result->setStatus('bad request');
+                    $result->setStatus('bad put request');
                     $result->setResult($model->getValidators()->getMessages());
                 }
 
@@ -213,7 +225,7 @@ abstract class RestController extends Controller
         }
 
         echo $this->getRestResponse();
-        die();
+//        die();
     }
 
     /**
@@ -257,7 +269,7 @@ abstract class RestController extends Controller
                         $result->setResult($model->dump());
                     } else {
                         $result->setCode("400");
-                        $result->setStatus('bad request');
+                        $result->setStatus('bad delete request');
                         $result->setResult($model->getValidators()->getMessages());
                     }
                 } else {
@@ -287,16 +299,6 @@ abstract class RestController extends Controller
     }
 
     /**
-     * To initiate a new RestRequest to RestController::_restRequest
-     *
-     * @return null
-     */
-    protected function initRestRequest()
-    {
-        $this->setRestRequest(new RestRequest());
-    }
-
-    /**
      * To prepare (if needed) and return a rest response
      *
      * @return RestResponse
@@ -313,6 +315,16 @@ abstract class RestController extends Controller
         }
 
         return $this->restResponse;
+    }
+
+    /**
+     * To initiate a new RestRequest to RestController::_restRequest
+     *
+     * @return null
+     */
+    protected function initRestRequest()
+    {
+        $this->setRestRequest(new RestRequest());
     }
 
     /**
@@ -335,10 +347,10 @@ abstract class RestController extends Controller
      *
      * @return RestRequest
      */
-    public function getRestRequest($init = false)
+    public function getRestRequest($reinit = false)
     {
 
-        if (is_null($this->restRequest) || $init) {
+        if (is_null($this->restRequest) || $reinit) {
             $this->initRestRequest();
         }
         return $this->restRequest;

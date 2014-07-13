@@ -181,11 +181,15 @@ class RestResponseResult
 
         array_walk($data,function(&$item, $key){
 
-            $formated = array();
-            foreach($item as $k=>$v){
-                $formated[$k] = is_numeric($v)? intval($v): $v;
+            if(is_array($item)){
+                $formatted = array();
+                foreach($item as $k=>$v){
+                    $formatted[$k] = is_numeric($v)? intval($v): $v;
+                }
+                $item = $formatted;
+            }else{
+                $item = array( $key => is_numeric($item)? intval($item): $item);
             }
-            $item = $formated;
         });
 
         $this->result = $data;
@@ -292,6 +296,7 @@ class RestResponseResult
             $metadataWhitelist = ['status', 'code', 'model'];
             break;
         case "PUT":
+            $metadataWhitelist = ['status', 'code', 'model'];
             break;
         case "DELETE":
             break;

@@ -62,21 +62,9 @@ class RestControllerTest extends \DBUnitTestCase
     }
 
     /**
-     * @covers RESTFulPhalcon\RestController::onConstruct
-     * @todo   Implement testOnConstruct().
-     */
-    public function testOnConstruct()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers RESTFulPhalcon\RestController::indexAction
      */
-    public function donttestIndexAction()
+    public function testIndexAction()
     {
 
         $expectedPlanesFixture  = $this->getDataSet()->getTable('plane');
@@ -125,7 +113,7 @@ class RestControllerTest extends \DBUnitTestCase
     /**
      * @covers RESTFulPhalcon\RestController::indexAction
      */
-    public function donttestIndexActionOnEmptyTable()
+    public function testIndexActionOnEmptyTable()
     {
 
         $this->truncate('plane');
@@ -136,9 +124,9 @@ class RestControllerTest extends \DBUnitTestCase
 
         $raw = array("_url" => $this->_url);
 
-        $this->object->setDefaultModelName('plane');
+//        $this->object->setDefaultModelName('plane');
         $guessedModelName = $this->object->getDefaultModel(true);
-        $this->assertEquals('plane',$guessedModelName);
+        $this->assertEquals('Plane',$guessedModelName);
 
         $mockRestRequest = $this->getMock("RESTFulPhalcon\RestRequest", array("getParams"));
 
@@ -150,45 +138,11 @@ class RestControllerTest extends \DBUnitTestCase
         $this->object->setRestRequest($mockRestRequest);
 
         $this->object->indexAction();
-        $this->expectOutputString('{"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"GET"},"results":[{"metadata":{"status":"OK","code":200,"model":"plane","criteria":{"limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":0,"count":0},"result":[]}]}');
+        $this->expectOutputString('{"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"GET"},"results":[{"metadata":{"status":"OK","code":200,"model":"Plane","criteria":{"limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":0,"count":0},"result":[]}]}');
 
     }
 
-    /**
-     * @covers RESTFulPhalcon\RestController::postAction
-     * @todo   Implement testPostAction().
-     */
-    public function testPostAction()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
 
-    /**
-     * @covers RESTFulPhalcon\RestController::putAction
-     * @todo   Implement testPutAction().
-     */
-    public function testPutAction()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers RESTFulPhalcon\RestController::deleteAction
-     * @todo   Implement testDeleteAction().
-     */
-    public function testDeleteAction()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
 
     /**
      * @covers RESTFulPhalcon\RestController::getRestResponse
@@ -196,10 +150,12 @@ class RestControllerTest extends \DBUnitTestCase
      */
     public function testGetRestResponse()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $response = $this->object->getRestResponse();
+        $this->assertInstanceOf('RESTFulPhalcon\RestResponse',$response);
+        $this->assertEmpty($response->getResults());
+        $this->assertEquals('/plane',$response->getEndpoint());
+        $this->assertEquals('GET',$response->getMethod());
+        $this->assertEquals('service.planeonline.local',$response->getUrl());
     }
 
     /**
@@ -208,10 +164,14 @@ class RestControllerTest extends \DBUnitTestCase
      */
     public function testSetRestRequest()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $restRequest = new RestRequest(array('param1'=>'param1Value'));
+
+        $this->object->setRestRequest($restRequest);
+
+        $this->setExpectedException('PHPUnit_Framework_Error','',4096);
+        $this->object->setRestRequest(new \ArrayObject());
+        $this->assertEquals($restRequest, $this->object->getRestRequest());
+
     }
 
     /**
@@ -220,10 +180,8 @@ class RestControllerTest extends \DBUnitTestCase
      */
     public function testGetRestRequest()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $request = $this->object->getRestRequest();
+        $this->assertInstanceOf('RESTFulPhalcon\RestRequest',$request);
     }
 
     /**
@@ -245,5 +203,95 @@ class RestControllerTest extends \DBUnitTestCase
 //        $this->setExpectedException('RESTFulPhalcon\RestModel\Exception','Guessed model "RESTFulPhalcon\Rest" is not exists');
         $guessedModelName = $this->object->getDefaultModel(true);
         $this->assertEquals('Plane',$guessedModelName);
+    }
+
+    /**
+     * @covers RESTFulPhalcon\RestController::postAction
+     * @todo   Implement testPostAction().
+     */
+    public function testPostAction()
+    {
+        $_SERVER["REQUEST_METHOD"] = "POST";
+
+        $guessedModelName = $this->object->getDefaultModel(true);
+        $this->assertEquals('Plane',$guessedModelName);
+
+        $raw = array(
+            array("user"=>"1","make"=>"1","title"=>"SK-1","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("user"=>"2","make"=>"2","title"=>"SK-2","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("user"=>"3","make"=>"3","title"=>"SK-3","description"=>"Introducing the world2019s most popular aircraft. "),
+        );
+
+        $guessedModelName = $this->object->getDefaultModel(true);
+        $this->assertEquals('Plane',$guessedModelName);
+
+        $mockRestRequest = $this->getMock("RESTFulPhalcon\RestRequest", array("getParams"));
+
+        $mockRestRequest->expects($this->once())
+            ->method("getParams")
+            ->will($this->returnValue($raw));
+
+        $this->object->setRestRequest($mockRestRequest);
+
+        $request = $this->object->getRestRequest();
+
+        $this->object->postAction();
+
+        $output = '{"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"POST","results":3,"success":3,"failed":0},"results":[{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":{"user":1},"make":{"make":1},"title":{"title":"SK-1"},"description":{"description":"Introducing the world2019s most popular aircraft. "},"id":{"id":1}}},{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":{"user":2},"make":{"make":2},"title":{"title":"SK-2"},"description":{"description":"Introducing the world2019s most popular aircraft. "},"id":{"id":2}}},{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":{"user":3},"make":{"make":3},"title":{"title":"SK-3"},"description":{"description":"Introducing the world2019s most popular aircraft. "},"id":{"id":3}}}]}';
+
+        $this->expectOutputString($output);
+
+    }
+
+    /**
+     * @covers RESTFulPhalcon\RestController::putAction
+     * @todo   Implement testPutAction().
+     */
+    public function testPutAction()
+    {
+        $_SERVER["REQUEST_METHOD"] = "PUT";
+
+        $guessedModelName = $this->object->getDefaultModel(true);
+        $this->assertEquals('Plane',$guessedModelName);
+
+        $raw = array(
+            array("id"=>"1", "user"=>"1","make"=>"3","title"=>"SK-1","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"2", "user"=>"2","make"=>"2","title"=>"SK-2","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"3", "user"=>"3","make"=>"1","title"=>"SK-3","description"=>"Introducing the world2019s most popular aircraft. "),
+        );
+
+        $guessedModelName = $this->object->getDefaultModel(true);
+        $this->assertEquals('Plane',$guessedModelName);
+
+        $mockRestRequest = $this->getMock("RESTFulPhalcon\RestRequest", array("getParams"));
+
+        $mockRestRequest->expects($this->once())
+            ->method("getParams")
+            ->will($this->returnValue($raw));
+
+        $this->object->setRestRequest($mockRestRequest);
+
+        $request = $this->object->getRestRequest();
+
+//        var_dump($request->getMethod());
+//        die();
+
+        $this->object->putAction();
+
+        $output = '---';
+
+        $this->expectOutputString($output);
+    }
+
+    /**
+     * @covers RESTFulPhalcon\RestController::deleteAction
+     * @todo   Implement testDeleteAction().
+     */
+    public function testDeleteAction()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
     }
 }
