@@ -188,7 +188,7 @@ class RestResponseResult
                 }
                 $item = $formatted;
             }else{
-                $item = array( $key => is_numeric($item)? intval($item): $item);
+                $item = is_numeric($item)? intval($item): $item;
             }
         });
 

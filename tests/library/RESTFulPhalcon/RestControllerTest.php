@@ -255,9 +255,9 @@ class RestControllerTest extends \DBUnitTestCase
         $this->assertEquals('Plane',$guessedModelName);
 
         $raw = array(
-            array("id"=>"1", "user"=>"1","make"=>"3","title"=>"SK-1","description"=>"Introducing the world2019s most popular aircraft. "),
-            array("id"=>"2", "user"=>"2","make"=>"2","title"=>"SK-2","description"=>"Introducing the world2019s most popular aircraft. "),
-            array("id"=>"3", "user"=>"3","make"=>"1","title"=>"SK-3","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"1", "user"=>"101","make"=>"101","title"=>"SK-101","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"2", "user"=>"102","make"=>"102","title"=>"SK-102","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"3", "user"=>"103","make"=>"101","title"=>"SK-103","description"=>"Introducing the world2019s most popular aircraft. "),
         );
 
         $guessedModelName = $this->object->getDefaultModel(true);
@@ -278,7 +278,7 @@ class RestControllerTest extends \DBUnitTestCase
 
         $this->object->putAction();
 
-        $output = '---';
+        $output = '{"metadata":{"url":":","endpoint":"","method":"PUT","results":3,"success":3,"failed":0},"results":[{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":1,"user":101,"make":101,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"2014-07-14 19:18:59","updated":"2014-07-14 21:20:34"}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":2,"user":102,"make":102,"title":"SK-102","description":"Introducing the world2019s most popular aircraft. ","created":"2014-07-14 19:18:59","updated":"2014-07-14 21:20:34"}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":3,"user":103,"make":101,"title":"SK-103","description":"Introducing the world2019s most popular aircraft. ","created":"2014-07-14 19:18:59","updated":"2014-07-14 21:20:34"}}]}';
 
         $this->expectOutputString($output);
     }

@@ -162,34 +162,22 @@ abstract class RestController extends Controller
 
         $dataSet = $request->getParams(true);
 
-        var_dump($modelName,$dataSet);
-//        die();
         if (!is_array($dataSet)) {
             $dataSet = array($dataSet);
         }
 
-        var_dump($modelName,$dataSet);
-//        die();
-
         foreach ($dataSet as $data) {
-
-
 
             $result = new RestResponseResult($this->getRestRequest()->getMethod());
 
             $result->setModel($modelName);
 
-            var_dump($data,$dataSet);
-//            die();
+            if (!isset($data['id'])) {
 
-            if (!isset($data->id)) {
-
-//                var_dump($data);
-//                die();
             } else {
 
                 $genericModel = $this->getDefaultModel();
-                $model = $genericModel->findFirst("id = $data->id");
+                $model = $genericModel->findFirst("id = " . $data['id']);
 
                 foreach ($data as $field => $value) {
 
