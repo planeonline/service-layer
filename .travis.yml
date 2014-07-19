@@ -9,11 +9,11 @@ install:
  - composer --prefer-source install
 
 before_script:
- - git submodule --quiet update --init --recursive
+#- git submodule --quiet update --init --recursive
  - git clone -q https://github.com/phalcon/cphalcon.git
  - sudo apt-get -qq install php5-dev
  - (cd cphalcon/build; sudo ./travis-install && phpenv config-add ../../config/php.d/phalcon.ini)
-  # - wget http://getcomposer.org/composer.phar
-  # - php composer.phar install
+#- wget http://getcomposer.org/composer.phar
+#- php composer.phar install
 
  script: (cd tests; phpunit --debug)
