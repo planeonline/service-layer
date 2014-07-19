@@ -17,3 +17,4 @@ before_script:
 #- php composer.phar install
 
  script: (cd tests; phpunit --debug)
+
