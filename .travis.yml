@@ -12,5 +12,7 @@ before_script:
   - ./cphalcon/unit-tests/ci/install_prereqs.sh
   - sudo apt-get -qq install php5-dev
   - (cd cphalcon/build; sudo ./travis-install && phpenv config-add ../../config/php.d/phalcon.ini)
+  - wget http://getcomposer.org/composer.phar
+  - php composer.phar install
 
 script: (cd tests; phpunit --debug)
