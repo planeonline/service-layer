@@ -29,6 +29,7 @@ class CreatePlane extends AbstractMigration
               ->addColumn('description', 'text')              
               ->addColumn('created', 'datetime')
               ->addColumn('updated', 'timestamp', array('default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'))
+              ->addColumn('status','integer', array('limit' => 2, 'default'=>0))
               ->create();
 
         $trigger = $this->execute("CREATE TRIGGER plane_created_datetime BEFORE INSERT ON plane FOR EACH ROW SET NEW.created = NOW()");
