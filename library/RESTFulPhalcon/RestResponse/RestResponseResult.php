@@ -127,7 +127,7 @@ class RestResponseResult
      */
     public function getCode()
     {
-        return $this->metadata['code'];
+        return isset($this->metadata['code'])? $this->metadata['code'] : false;
     }
 
     /**
@@ -162,7 +162,7 @@ class RestResponseResult
 
         $success = false;
 
-        if (substr($this->getCode(), 0, 1) == 2) {
+        if ($this->getCode() && substr($this->getCode(), 0, 1) == 2) {
             $success = true;
         }
 

@@ -72,17 +72,8 @@ class RestControllerTest extends \DBUnitTestCase
         $expectedPlanes = array();
         for($r = 0 ; $r < $expectedPlanesFixture->getRowCount(); $r++){
             $plane = $expectedPlanesFixture->getRow($r);
-
-            $plane['created'] = date('Y-m-d H:i:s');
-            $plane['updated'] = '0000-00-00 00:00:00';
-
             $expectedPlanes[] = $plane;
         }
-
-        $expectedResult = json_encode($expectedPlanes);
-
-        $expectedOutput = '{"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"GET"},"results":[{"metadata":{"status":"OK","code":200,"model":"plane","criteria":{"limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":3,"count":3},'.
-            '"result":'. $expectedResult .'}]}';
 
         $this->getDatabaseTester()->setDataSet($this->getDataSet());
         $this->getDatabaseTester()->onSetUp();
@@ -105,8 +96,10 @@ class RestControllerTest extends \DBUnitTestCase
 
         $this->object->setRestRequest($mockRestRequest);
 
+        $expectedOutputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"GET"},"results":\[{"metadata":{"status":"OK","code":200,"model":"plane","criteria":{"limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":3,"count":3},"result":\[{"id":1,"user":1,"make":1,"title":"plane title","description":"some description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0},{"id":2,"user":1,"make":1,"title":"plane title","description":"some description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0},{"id":3,"user":2,"make":2,"title":"plane title","description":"planes description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0}]}]}';
+        $this->expectOutputRegex($expectedOutputRegex);
+
         $this->object->indexAction();
-        $this->expectOutputString($expectedOutput);
 
     }
 
@@ -290,9 +283,32 @@ class RestControllerTest extends \DBUnitTestCase
      */
     public function testDeleteAction()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+
+        $_SERVER["REQUEST_METHOD"] = "DELETE";
+
+        $guessedModelName = $this->object->getDefaultModel(true);
+        $this->assertEquals('Plane',$guessedModelName);
+
+        $raw = array(
+            array("id"=>"1"),
+            array("id"=>"3"),
         );
+
+        $guessedModelName = $this->object->getDefaultModel(true);
+        $this->assertEquals('Plane',$guessedModelName);
+
+        $mockRestRequest = $this->getMock("RESTFulPhalcon\RestRequest", array("getParams"));
+
+        $mockRestRequest->expects($this->once())
+            ->method("getParams")
+            ->will($this->returnValue($raw));
+
+        $this->object->setRestRequest($mockRestRequest);
+
+        $this->object->deleteAction();
+
+        $outputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"DELETE","results":2,"success":2,"failed":0},"results":\[{"metadata":{"model":"Plane","code":"200","status":"deleted"},"result":{"id":1,"user":101,"make":101,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":0}},{"metadata":{"model":"Plane","code":"200","status":"deleted"},"result":{"id":3,"user":103,"make":101,"title":"SK-103","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":0}}]}';
+        $this->expectOutputRegex($outputRegex);
+
     }
 }

@@ -46,7 +46,7 @@ abstract class RestModel extends \Phalcon\Mvc\Model
 
     const STATUS_PENDING = null;
     const STATUS_DELETED = 0;
-    const STATUS_LOCKED = 1;
+    const STATUS_DEACTIVATED = 1;
     const STATUS_ACTIVE = 2;
 
     /**

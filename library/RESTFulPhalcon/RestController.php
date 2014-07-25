@@ -242,10 +242,10 @@ abstract class RestController extends Controller
 
             $result->setModel($modelName);
 
-            if (isset($data->id)) {
+            if (isset($data['id'])) {
 
                 $genericModel = $this->getDefaultModel();
-                $model = $genericModel->findFirst("id = $data->id");
+                $model = $genericModel->findFirst("id = {$data['id']}");
 
                 if ($model) {
 
@@ -264,7 +264,7 @@ abstract class RestController extends Controller
                     $result->setCode("404");
                     $result->setStatus('Not Found');
                     $result->setResult(
-                        ["There is no $modelName with id $data->id avilable"]
+                        ["There is no $modelName with id {$data['id']} avilable"]
                     );
                 }
 
@@ -273,7 +273,6 @@ abstract class RestController extends Controller
         }
 
         echo $this->getRestResponse();
-        die();
     }
 
     /**

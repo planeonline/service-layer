@@ -35,7 +35,8 @@ class RestModelTest extends \DBUnitTestCase
 
 //        $this->object = $this->getMock('\RESTFulPhalcon\RestModel',null,array(),'make');
 
-        $this->validator = $this->getMockForAbstractClass('RESTFulPhalcon\RestModel\Validator',array(),'PlaneValidator');
+        //$this->validator = $this->getMockForAbstractClass('RESTFulPhalcon\RestModel\Validator',array(),'PlaneValidator');
+        $this->validator = $this->getMockForAbstractClass('RESTFulPhalcon\RestModel\Validator',array());
 
         $this->object->expects($this->any())
             ->method('getValidators')

@@ -1,5 +1,6 @@
 <?php
-use Phalcon\DI,
+use Phalcon\Config\Adapter\Ini,
+    Phalcon\DI,
     Phalcon\DI\FactoryDefault;
 
 ini_set('display_errors',1);
