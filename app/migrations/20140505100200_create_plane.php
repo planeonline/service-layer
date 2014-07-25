@@ -30,6 +30,14 @@ class CreatePlane extends AbstractMigration
               ->addColumn('created', 'datetime')
               ->addColumn('updated', 'timestamp', array('default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'))
               ->addColumn('status','integer', array('limit' => 2, 'default'=>0))
+              ->addForeignKey('user', 'user', 'id', array(
+                //'constraint'=>'plane_user_id',
+                'delete'=> 'RESTRICT',
+                update=> 'NO_ACTION'))
+              ->addForeignKey('make', 'make', 'id', array(
+                //'constraint'=>'plane_make_id',
+                'delete'=> 'RESTRICT',
+                update=> 'NO_ACTION'))
               ->create();
 
         $trigger = $this->execute("CREATE TRIGGER plane_created_datetime BEFORE INSERT ON plane FOR EACH ROW SET NEW.created = NOW()");
