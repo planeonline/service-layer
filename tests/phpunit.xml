@@ -11,6 +11,7 @@
          stopOnFailure="false"
          syntaxCheck="true">
     <testsuite name="Planeon - Testsuite">
-        <directory>./app</directory>
+        <directory>./</directory>
+        <!-- directory>./app</directory -->
     </testsuite>
 </phpunit>
