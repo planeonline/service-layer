@@ -79,8 +79,18 @@ class Plane extends RestModel
     {
         parent::initialize();
 
-        $this->belongsTo('make', 'Make', 'id');
-        $this->belongsTo('user', 'User', 'id');
+        $this->belongsTo('make', 'Make', 'id',array(
+            "foreignKey" => array(
+                "message" => "The provided make does not exists"
+            )
+        ));
+
+        $this->belongsTo('user', 'User', 'id',array(
+            "foreignKey" => array(
+                "message" => "The provided user does not exists"
+            )
+        ));
+
         $this->hasMany(
             'id', 'Image', 'plane', array(
                 'foreignKey' => array(
