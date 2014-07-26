@@ -25,6 +25,7 @@
 
 namespace RESTFulPhalcon\RestResponse;
 
+use Phalcon\Validation\Message;
 use RESTFulPhalcon\RestRequest\RestCriteria;
 
 /**
@@ -181,7 +182,11 @@ class RestResponseResult
 
         array_walk($data,function(&$item, $key){
 
-            if(is_array($item)){
+            if($item instanceof \Phalcon\Mvc\Model\Message){
+
+                $item = $item->getMessage();
+
+            }elseif(is_array($item)){
                 $formatted = array();
                 foreach($item as $k=>$v){
                     $formatted[$k] = is_numeric($v)? intval($v): $v;

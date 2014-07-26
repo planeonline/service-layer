@@ -130,6 +130,8 @@ abstract class RestController extends Controller
 
             $result = new RestResponseResult($this->getRestRequest()->getMethod());
             $result->setModel($this->getDefaultModel(true));
+
+
             if ($model->create()) {
                 $result->setCode("201");
                 $result->setStatus('created');
@@ -137,7 +139,7 @@ abstract class RestController extends Controller
             } else {
                 $result->setCode("400");
                 $result->setStatus('bad post request');
-                $result->setResult($model->getValidators()->getMessages());
+                $result->setResult($model->getMessages());
             }
             $this->getRestResponse()->addResult($result);
         }
@@ -205,7 +207,7 @@ abstract class RestController extends Controller
                 } else {
                     $result->setCode("400");
                     $result->setStatus('bad put request');
-                    $result->setResult($model->getValidators()->getMessages());
+                    $result->setResult($model->getMessages());
                 }
 
             }
@@ -258,7 +260,7 @@ abstract class RestController extends Controller
                     } else {
                         $result->setCode("400");
                         $result->setStatus('bad delete request');
-                        $result->setResult($model->getValidators()->getMessages());
+                        $result->setResult($model->getMessages());
                     }
                 } else {
                     $result->setCode("404");
