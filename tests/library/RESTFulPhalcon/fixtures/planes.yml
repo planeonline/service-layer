@@ -1,3 +1,24 @@
+user:
+  -
+    id: 1
+    email: abn@webit4.me
+    password: pass
+    firstname: ali
+    lastname: bahman
+    description: its me
+    created: 2014-06-03 19:35:06
+    updated: 2015-07-04 20:36:07
+    status: 1
+
+make:
+  -
+    id: 1
+    title: Beachcraft
+    description: its beach craft
+    created: 2014-06-03 19:35:06
+    updated: 2015-07-04 20:36:07
+    status: 1
+
 plane:
   -
     id: 1
@@ -19,8 +40,8 @@ plane:
     status: 0
   -
     id: 3
-    user: 2
-    make: 2
+    user: 1
+    make: 1
     title: plane title
     description: planes description
     created: 2014-06-03 19:35:06

@@ -29,11 +29,11 @@ class RestModelTest extends \DBUnitTestCase
         parent::setUp($di,$config);
 
         $this->object = $this->getMockBuilder('RESTFulPhalcon\RestModel')
-            ->setMockClassName('make')
+            ->setMockClassName('note')
             ->setMethods(array('getValidators'))
             ->getMock();
 
-//        $this->object = $this->getMock('\RESTFulPhalcon\RestModel',null,array(),'make');
+//        $this->object = $this->getMock('\RESTFulPhalcon\RestModel',null,array(),'note');
 
         //$this->validator = $this->getMockForAbstractClass('RESTFulPhalcon\RestModel\Validator',array(),'PlaneValidator');
         $this->validator = $this->getMockForAbstractClass('RESTFulPhalcon\RestModel\Validator',array());
@@ -53,7 +53,7 @@ class RestModelTest extends \DBUnitTestCase
     }
 
     protected function getFixture(){
-        return dirname(__FILE__)."/fixtures/makes.yml";
+        return dirname(__FILE__)."/fixtures/notes.yml";
     }
 
     /**
@@ -66,14 +66,14 @@ class RestModelTest extends \DBUnitTestCase
         $this->assertTrue($this->object->validation());
 
         $this->validator->add(new Numericality(array(
-            'field'=> 'make')));
+            'field'=> 'note')));
 
         $this->validator->add(new StringLength(array(
-            'field'=> 'make',
+            'field'=> 'note',
             'max' => 11,
             'min' => 3,
-            'messageMaximum' => 'Maximum length for make id is (11)',
-            'messageMinimum' => 'Minimum length for make id is (1)')));
+            'messageMaximum' => 'Maximum length for note id is (11)',
+            'messageMinimum' => 'Minimum length for note id is (1)')));
 
         $this->object->expects($this->any())
             ->method('getValidators')
@@ -82,16 +82,16 @@ class RestModelTest extends \DBUnitTestCase
         $this->assertInstanceOf('RESTFulPhalcon\RestModel\Validator',$this->object->getValidators());
 
         $this->assertTrue($this->object->validation(array(
-            'make' => 123,
+            'note' => 123,
             )));
         $this->assertFalse($this->object->validation(array(
-            'make' => 12,
+            'note' => 12,
             )));
         $this->assertFalse($this->object->validation(array(
-            'make' => 123456789011,
+            'note' => 123456789011,
             )));
         $this->assertFalse($this->object->validation(array(
-            'make' => 'abcd',
+            'note' => 'abcd',
             )));
 
 
@@ -104,18 +104,18 @@ class RestModelTest extends \DBUnitTestCase
     public function testCreate()
     {
 
-        $this->truncate('make');
-        $this->assertEquals(0,$this->getConnection()->getRowCount('make'), "Plane's table expected to be empty");
+        $this->truncate('note');
+        $this->assertEquals(0,$this->getConnection()->getRowCount('note'), "note's table expected to be empty");
 
-        $make = $this->getDataSet()->getTable('make')->getRow(0);
+        $note = $this->getDataSet()->getTable('note')->getRow(0);
 
-        unset($make['id']);
-        unset($make['created']);
-        unset($make['updated']);
+        unset($note['id']);
+        unset($note['created']);
+        unset($note['updated']);
 
 
-        $this->assertTrue($this->object->create($make));
-        $this->assertEquals(1,$this->getConnection()->getRowCount('make'), "Failed inserting record");
+        $this->assertTrue($this->object->create($note));
+        $this->assertEquals(1,$this->getConnection()->getRowCount('note'), "Failed inserting record");
 
 
     }

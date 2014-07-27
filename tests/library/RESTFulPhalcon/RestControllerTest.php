@@ -32,23 +32,6 @@ class RestControllerTest extends \DBUnitTestCase
         $config = new \Phalcon\Config\Adapter\Ini(CONFIG_PATH);
         parent::setUp($di,$config);
 
-//        $this->object = new RestController;
-
-//        $this->object = $this->getMockBuilder('\RESTFulPhalcon\RestController')
-//            ->setMockClassName('PlaneController')
-//            ->setMethods(array('getDefaultModel'))
-//            ->getMock();
-
-//        $this->object->expects($this->any())
-//            ->method('getDefaultModel')
-//            ->with(true)
-//            ->will($this->returnValue('plane'));
-
-//        $this->object->expects($this->any())
-//            ->method('getDefaultModel')
-//            ->with(false)
-//            ->will($this->returnValue('train'));
-
         $this->object = $this->getMock('\RESTFulPhalcon\RestController',null,array(),'PlaneController');
     }
 
@@ -96,7 +79,7 @@ class RestControllerTest extends \DBUnitTestCase
 
         $this->object->setRestRequest($mockRestRequest);
 
-        $expectedOutputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"GET"},"results":\[{"metadata":{"status":"OK","code":200,"model":"plane","criteria":{"limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":3,"count":3},"result":\[{"id":1,"user":1,"make":1,"title":"plane title","description":"some description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0},{"id":2,"user":1,"make":1,"title":"plane title","description":"some description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0},{"id":3,"user":2,"make":2,"title":"plane title","description":"planes description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0}]}]}';
+        $expectedOutputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"GET"},"results":\[{"metadata":{"status":"OK","code":200,"model":"plane","criteria":{"limit":{"number":"10","offset":"0"}},"size":10,"start":0,"total":3,"count":3},"result":\[{"id":1,"user":1,"make":1,"title":"plane title","description":"some description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0},{"id":2,"user":1,"make":1,"title":"plane title","description":"some description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0},{"id":3,"user":1,"make":1,"title":"plane title","description":"planes description","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"0000-00-00 00:00:00","status":0}]}]}';
         $this->expectOutputRegex($expectedOutputRegex);
 
         $this->object->indexAction();
@@ -211,8 +194,8 @@ class RestControllerTest extends \DBUnitTestCase
 
         $raw = array(
             array("user"=>"1","make"=>"1","title"=>"SK-1","description"=>"Introducing the world2019s most popular aircraft. ","status"=>1),
-            array("user"=>"2","make"=>"2","title"=>"SK-2","description"=>"Introducing the world2019s most popular aircraft. ","status"=>1),
-            array("user"=>"3","make"=>"3","title"=>"SK-3","description"=>"Introducing the world2019s most popular aircraft. ","status"=>1),
+            array("user"=>"2","make"=>"1","title"=>"SK-2","description"=>"Introducing the world2019s most popular aircraft. ","status"=>1),
+            array("user"=>"1","make"=>"2","title"=>"SK-3","description"=>"Introducing the world2019s most popular aircraft. ","status"=>1),
         );
 
         $guessedModelName = $this->object->getDefaultModel(true);
@@ -230,9 +213,9 @@ class RestControllerTest extends \DBUnitTestCase
 
         $this->object->postAction();
 
-        $output = '{"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"POST","results":3,"success":3,"failed":0},"results":[{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":1,"make":1,"title":"SK-1","description":"Introducing the world2019s most popular aircraft. ","status":1,"id":1}},{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":2,"make":2,"title":"SK-2","description":"Introducing the world2019s most popular aircraft. ","status":1,"id":2}},{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":3,"make":3,"title":"SK-3","description":"Introducing the world2019s most popular aircraft. ","status":1,"id":3}}]}';
+        $outputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"POST","results":3,"success":1,"failed":2},"results":\[{"metadata":{"status":"created","code":"201","model":"Plane"},"result":{"user":1,"make":1,"title":"SK-1","description":"Introducing the world2019s most popular aircraft. ","status":1,"id":\d}},{"metadata":{"status":"bad post request","code":"400","model":"Plane"},"result":\["The provided user does not exists"]},{"metadata":{"status":"bad post request","code":"400","model":"Plane"},"result":\["The provided make does not exists"]}]}';
 
-        $this->expectOutputString($output);
+        $this->expectOutputRegex($outputRegex);
 
     }
 
@@ -248,9 +231,9 @@ class RestControllerTest extends \DBUnitTestCase
         $this->assertEquals('Plane',$guessedModelName);
 
         $raw = array(
-            array("id"=>"1", "user"=>"101","make"=>"101","title"=>"SK-101","description"=>"Introducing the world2019s most popular aircraft. "),
-            array("id"=>"2", "user"=>"102","make"=>"102","title"=>"SK-102","description"=>"Introducing the world2019s most popular aircraft. "),
-            array("id"=>"3", "user"=>"103","make"=>"101","title"=>"SK-103","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"1", "user"=>"1","make"=>"1","title"=>"SK-101","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"2", "user"=>"1","make"=>"1","title"=>"SK-102","description"=>"Introducing the world2019s most popular aircraft. "),
+            array("id"=>"3", "user"=>"1","make"=>"1","title"=>"SK-103","description"=>"Introducing the world2019s most popular aircraft. "),
         );
 
         $guessedModelName = $this->object->getDefaultModel(true);
@@ -264,15 +247,12 @@ class RestControllerTest extends \DBUnitTestCase
 
         $this->object->setRestRequest($mockRestRequest);
 
-        $request = $this->object->getRestRequest();
-
-//        var_dump($request->getMethod());
-//        die();
-
         $this->object->putAction();
 
-        $output      =   '{"metadata":{"url":"service.planeonline.local","endpoint":"\/plane","method":"PUT","results":3,"success":3,"failed":0},"results":[{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":1,"user":101,"make":101,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"$2014-07-15 19:22:06","updated":"2014-07-15 19:22:06"}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":2,"user":102,"make":102,"title":"SK-102","description":"Introducing the world2019s most popular aircraft. ","created":"2014-07-15 19:22:07","updated":"2014-07-15 19:22:07"}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":3,"user":103,"make":101,"title":"SK-103","description":"Introducing the world2019s most popular aircraft. ","created":"2014-07-15 19:22:07","updated":"2014-07-15 19:22:07"}}]}';
-        $outputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"PUT","results":3,"success":3,"failed":0},"results":\[{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":1,"user":101,"make":101,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":1}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":2,"user":102,"make":102,"title":"SK-102","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":1}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":3,"user":103,"make":101,"title":"SK-103","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":1}}]}';
+        //{"metadata":{"url":"service.planeonline.local","endpoint":"\ /plane","method":"PUT","results":1,"success":1,"failed":0},"results": [{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":1,"user":1,"make":1,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"2014-07-26 21:16:53","updated":"2014-07-26 21:16:53","status":1}}]}'
+        //{"metadata":{"url":"service.planeonline.local","endpoint":"\\/plane","method":"PUT","results":3,"success":3,"failed":0},"results":\[{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":1,"user":101,"make":101,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":1}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":2,"user":102,"make":102,"title":"SK-102","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":1}},{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":3,"user":103,"make":101,"title":"SK-103","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":1}}]}
+
+        $outputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"PUT","results":1,"success":1,"failed":0},"results":\[{"metadata":{"status":"updated","code":"200","model":"Plane"},"result":{"id":1,"user":1,"make":1,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":1}}]}';
 
         $this->expectOutputRegex($outputRegex);
     }
@@ -307,7 +287,7 @@ class RestControllerTest extends \DBUnitTestCase
 
         $this->object->deleteAction();
 
-        $outputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"DELETE","results":2,"success":2,"failed":0},"results":\[{"metadata":{"model":"Plane","code":"200","status":"deleted"},"result":{"id":1,"user":101,"make":101,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":0}},{"metadata":{"model":"Plane","code":"200","status":"deleted"},"result":{"id":3,"user":103,"make":101,"title":"SK-103","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":0}}]}';
+        $outputRegex = '{"metadata":{"url":"service.planeonline.local","endpoint":"\\\/plane","method":"DELETE","results":2,"success":1,"failed":1},"results":\[{"metadata":{"model":"Plane","code":"200","status":"deleted"},"result":{"id":1,"user":1,"make":1,"title":"SK-101","description":"Introducing the world2019s most popular aircraft. ","created":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","updated":"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}","status":0}},{"metadata":{"model":"Plane","code":"404","status":"Not Found"},"result":\["There is no Plane with id 3 avilable"]}]}';
         $this->expectOutputRegex($outputRegex);
 
     }
