@@ -67,21 +67,18 @@ class RestResponse
     /**
      * Constructor
      *
-     * @param null|string $url      the API's url
-     * @param null|string $endpoint the path responding to the call
-     * @param null|string $method   Any of restful accepted methods
+     * @param RestRequest   $request  the restful request
+     * @param RestModel     $model    the generic model responding to this call
      */
-    public function __construct($url = null, $endpoint = null, $method = null)
+    public function __construct($request=null,$model=null)
     {
-        if (!is_null($url)) {
-            $this->setUrl($url);
+
+        if(!is_null($request)){
+            $this->setUrl($request->getHttpHost());
+            $this->setEndPoint($request->getURI());
+            $this->setMethod($request->getMethod());
         }
-        if (!is_null($endpoint)) {
-            $this->setEndPoint($endpoint);
-        }
-        if (!is_null($method)) {
-            $this->setMethod($method);
-        }
+
     }
 
     /**

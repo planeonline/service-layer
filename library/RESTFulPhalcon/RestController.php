@@ -297,9 +297,8 @@ abstract class RestController extends Controller
 
         if (is_null($this->restResponse)) {
             $this->restResponse = new RestResponse(
-                $this->getRestRequest()->getHttpHost(),
-                $this->getRestRequest()->getURI(),
-                $this->getRestRequest()->getMethod()
+                $this->getRestRequest(),
+                $this->getDefaultModel()
             );
         }
 
